@@ -84,9 +84,7 @@ class Tile extends PIXI.Sprite {
 		if (this.gridx < 0 || this.gridx >= GRIDWIDTH || this.gridy < 0 || this.gridy >= GRIDHEIGHT) { return; }
 		if (this.done || this.flagged) { return; }
 
-		// set sprite to what it is supposed to be
 		this.changeSprite(this.tileReleased);
-
 		this.done = true;
 
 		if (!this.adj) {
