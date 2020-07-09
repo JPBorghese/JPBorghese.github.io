@@ -1,5 +1,5 @@
 
-const SPRITEWIDTH	= 32;
+const SPRITEWIDTH = 32;
 const SPRITEHEIGHT = 32;
 const GRIDWIDTH = 30;
 const GRIDHEIGHT = 16;
