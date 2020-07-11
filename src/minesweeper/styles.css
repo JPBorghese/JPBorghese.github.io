@@ -17,6 +17,7 @@
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
+	background-image: url('../../img/Tile-1.png');
 }
 
 header {
@@ -28,6 +29,10 @@ header {
 	font-size: 15px;
 	background-image: linear-gradient(red, orange);
 	display: block;
+}
+
+body {
+	background-color: #0f0f0f;
 }
 
 footer {

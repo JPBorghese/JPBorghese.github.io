@@ -7,14 +7,18 @@
 	<link rel='stylesheet' href='src/minesweeper/styles.css'>
 </head>
 
-<body style='background-color: #0f0f0f'>
+<body>
 	<header>
 		<h1>Welcome to my Crappy website</h1>
 	</header>
 
-	<p id='bombText'>Bombs: 99</p>
+	<div>
+		<p id='bombText'>Bombs: 99</p>
+	</div>
 
 	<canvas id='canvas'></canvas>
+
+	<button type='button' onclick='resetClicked()'><b>Reset</b></button>
 
 </body>
 
@@ -25,5 +29,6 @@
 <script src='src/pixi.min.js'></script>
 <script src='src/minesweeper/tile.js'></script>
 <script src='src/minesweeper/minesweeper.js'></script>
+<script src='src/minesweeper/main.js'></script>
 
 </html>

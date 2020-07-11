@@ -1,14 +1,22 @@
+const SPRITEWIDTH = 32;
+const SPRITEHEIGHT = 32;
+const GRIDWIDTH = 30;
+const GRIDHEIGHT = 16;
+const BOMBMAX = 99;
+const WIDTH = GRIDWIDTH * SPRITEWIDTH;
+const HEIGHT = GRIDHEIGHT * SPRITEHEIGHT;
+const BOMB = 1;
+const EMPTY = 0;
 
 class Tile extends PIXI.Sprite {
 	constructor(a, b, c) {
 		super();
 		this.gridx = a;
 		this.gridy = b;
-		this.type = c;
+		this.main = c;
 
 		this.flagged = false;
 		this.done = false;
-		//this.currentSprite;
 
 		this.x = this.gridx * SPRITEWIDTH;
 		this.y = this.gridy * SPRITEHEIGHT;
@@ -19,20 +27,20 @@ class Tile extends PIXI.Sprite {
 		this.on('pointerout', this.onPointerLeave.bind(this));
 		this.on('pointerover', this.onPointerEnter.bind(this));
 
-		// lets you interact with sprite
-		this.interactive = true;
-	}
-
-	setSprite() {
-
-		let tileIMG = 'img/Tile' + this.adj + '.png';
-		this.tileReleased = PIXI.Sprite.from(tileIMG);
 		this.tileUnpressed = PIXI.Sprite.from('img/TileDefault.png');
 		this.tilePressed = PIXI.Sprite.from('img/TilePressed.png');
 		this.tileFlag = PIXI.Sprite.from('img/TileFlag.png');
 
 		this.addChild(this.tileUnpressed);
 		this.currentSprite = this.tileUnpressed;
+
+		// lets you interact with sprite
+		this.interactive = true;
+	}
+
+	setSprite() {
+		let tileIMG = 'img/Tile' + this.adj + '.png';
+		this.tileReleased = PIXI.Sprite.from(tileIMG);
 	}
 
 	changeSprite(newSprite) {
@@ -41,6 +49,15 @@ class Tile extends PIXI.Sprite {
 		this.removeChild(this.currentSprite);
 		this.addChild(newSprite);
 		this.currentSprite = newSprite;
+	}
+
+	reset() {
+		this.done = false;
+		if (this.flagged) {
+			this.removeChild(this.tileFlag);
+			this.flagged = false;
+		}
+		this.changeSprite(this.tileUnpressed);
 	}
 
 	onClick(event) {
@@ -54,8 +71,12 @@ class Tile extends PIXI.Sprite {
 		else if (button & 2) {
 			if (this.flagged) {
 				this.removeChild(this.tileFlag);
+				this.main.currentBombs++;
+				document.getElementById('bombText').innerHTML = this.main.currentBombs;
 			} else {
 				this.addChild(this.tileFlag);
+				this.main.currentBombs--;
+				document.getElementById('bombText').innerHTML = this.main.currentBombs;
 			}
 
 			this.flagged = !this.flagged;
@@ -63,13 +84,18 @@ class Tile extends PIXI.Sprite {
 	}
 
 	onRelease(event) {
-		if (event.data.button === 0)
+		if (event.data.button === 0) {
+			if (this.main.firstClick === true) {
+				this.main.firstClick = false;
+				this.main.createBombArray(this.gridx, this.gridy);
+				this.main.setTileValues();
+			}
 			this.exposeTiles();
+		}
 	}
 
 	onPointerLeave() {
 		if (this.done) return;
-
 		this.changeSprite(this.tileUnpressed);
 	}
 
@@ -87,7 +113,12 @@ class Tile extends PIXI.Sprite {
 		this.changeSprite(this.tileReleased);
 		this.done = true;
 
-		if (!this.adj) {
+		if (this.type) {
+			alert('you are ded, not big surprise');
+			this.main.freezeTiles();
+		}
+
+		if (this.adj === 0) {
 			this.recursionCheck(-1, -1);
 			this.recursionCheck(-1, 0);
 			this.recursionCheck(-1, 1);
@@ -100,28 +131,23 @@ class Tile extends PIXI.Sprite {
 	}
 
 	recursionCheck(xoffset, yoffset) {
-		let tile = getTile(this.gridx + xoffset, this.gridy + yoffset);
+		let tile = getTile(this.gridx + xoffset, this.gridy + yoffset, this.main);
 		if (tile !== null) {
 			tile.exposeTiles();
 		}
 	}
 }
 
-
-function getTile(x, y) {
-    if(x >= 0 && x < gameArray.length) {
-        if(y >= 0 && y < gameArray[x].length) {
-            return gameArray[x][y];
-        }
-    }
-    return null;
+function getTile(x, y, main) {
+	if(x >= 0 && x < main.gameArray.length) {
+		if(y >= 0 && y < main.gameArray[x].length) {
+			return main.gameArray[x][y];
+		}
+	}
+	return null;
 }
 
-function getTileType(x, y) {
-	 if(x >= 0 && x < gameArray.length) {
-        if(y >= 0 && y < gameArray[x].length) {
-            return gameArray[x][y].type;
-        }
-    }
-    return null;
+function getTileType(x, y, main) {
+	let tile = getTile(x, y, main);
+	return (tile === null) ? null : tile.type;
 }
