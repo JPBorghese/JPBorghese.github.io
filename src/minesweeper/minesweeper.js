@@ -19,8 +19,6 @@ class Main {
 
 		this.graphics = new PIXI.Graphics();
 		this.app.stage.addChild(this.graphics);
-
-		//this.app.ticker.add(this.update.bind(this));
 	}
 
 	resetGame() {
