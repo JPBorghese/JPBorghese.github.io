@@ -2,19 +2,25 @@
 class Main {
 
 	constructor() {
-		this.WIDTH = 1920;
+	  this.WIDTH = 1920;
 		this.HEIGHT = 1024;
+
+		this.myCanvas = document.getElementById('myCanvas');
+
+		this.WIDTH = this.myCanvas.width;
+		this.HEIGHT = this.myCanvas.height;
+
 		this.currentBombs = BOMBMAX;
 		this.firstClick = true;
 		this.bombs = [];
 
 		this.app = new PIXI.Application({
-			width: WIDTH,
-			height: HEIGHT,
+			width: 960,
+			height: 512,
 			antialising: false,
 			transparent: false,
 			resolution: 1,
-			view: document.getElementById('canvas')
+			view: this.myCanvas
 		});
 
 		this.graphics = new PIXI.Graphics();

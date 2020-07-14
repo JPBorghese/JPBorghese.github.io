@@ -8,6 +8,8 @@ const HEIGHT = GRIDHEIGHT * SPRITEHEIGHT;
 const BOMB = 1;
 const EMPTY = 0;
 
+// 960 x 512
+
 class Tile extends PIXI.Sprite {
 	constructor(a, b, c) {
 		super();
