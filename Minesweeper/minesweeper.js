@@ -2,13 +2,7 @@
 class Main {
 
 	constructor() {
-	  this.WIDTH = 1920;
-		this.HEIGHT = 1024;
-
 		this.myCanvas = document.getElementById('myCanvas');
-
-		this.WIDTH = this.myCanvas.width;
-		this.HEIGHT = this.myCanvas.height;
 
 		this.currentBombs = BOMBMAX;
 		this.firstClick = true;
